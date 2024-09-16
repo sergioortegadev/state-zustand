@@ -20,7 +20,7 @@ const CartRow = ({
         <button onClick={() => subQuantity(item.id)}>➖</button>
       </div>
 
-      <p className="cart-row-total">$ {item.price * item.quantity}</p>
+      <p className="cart-row-total">$ {(item.price * (item.quantity ?? 1)).toFixed(2)}</p>
       <button onClick={() => remove(item.id)}>❌</button>
     </div>
   );

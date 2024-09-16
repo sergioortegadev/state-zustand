@@ -15,7 +15,9 @@ const Cart = ({
   remove: (id: number) => void;
   showCart: boolean;
 }) => {
-  const [closeCart, setCloseCart] = useState(true);
+  const [closeCart, setCloseCart] = useState<boolean>(true);
+  const [total, setTotal] = useState<number>(0);
+
   const handleCloseCart = () => {
     setCloseCart(!closeCart);
   };
@@ -23,13 +25,31 @@ const Cart = ({
     handleCloseCart();
   }, [showCart]);
 
+  useEffect(() => {
+    setTotal(cartItems.reduce((acc, item) => acc + item.price * (item.quantity ?? 1), 0));
+  }, [cartItems]);
+
   return (
-    <div className={`external-cart ${closeCart ? "" : "hidden"}`} onClick={handleCloseCart}>
-      <div className="cart" onClick={(e) => e.stopPropagation()}>
-        {cartItems.map((item) => (
-          <CartRow key={item.id} item={item} addQuantity={addQuantity} subQuantity={subQuantity} remove={remove} />
-        ))}
-      </div>
+    <div
+      className={`external-cart ${closeCart ? "slide-in slide-in-active" : "slide-out slide-out-active"}`}
+      onClick={handleCloseCart}
+    >
+      {cartItems.length === 0 ? (
+        <div className="cart">No items in cart</div>
+      ) : (
+        <div className="cart" onClick={(e) => e.stopPropagation()}>
+          <button className="cart-btn-close" onClick={handleCloseCart}>
+            ✖
+          </button>
+          {cartItems.map((item) => (
+            <CartRow key={item.id} item={item} addQuantity={addQuantity} subQuantity={subQuantity} remove={remove} />
+          ))}
+          <button className="cart-btn-checkout">
+            <div>Total ${total.toFixed(2)}</div>
+            <div>Checkout</div>
+          </button>
+        </div>
+      )}
     </div>
   );
 };

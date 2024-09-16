@@ -2,6 +2,8 @@ import { useEffect, useState } from "react";
 import { IoCartOutline } from "react-icons/io5";
 import Card from "./Card";
 import Cart from "./Cart";
+import fetchData from "../utils/fetchData";
+import { itemsNumber, handleAddToCart, remove, addQuantity, subQuantity, handleEscape } from "../utils/cartManager";
 
 export interface Product {
   quantity?: number;
@@ -53,49 +55,31 @@ export interface ProductList {
 const Products = () => {
   const [prods, setProds] = useState<Product[] | null>(null);
   const [cartItems, setCartItems] = useState<Product[] | []>([]);
-  const [showCart, setShowCart] = useState(false);
+  const [showCart, setShowCart] = useState<boolean>(false);
+  const [cartItemsNumber, setCartItemsNumber] = useState<number>(0);
 
-  const fetchData = async () => {
-    const res = await fetch("https://dummyjson.com/products");
-    const data = await res.json();
-    setProds(data.products);
-  };
   useEffect(() => {
-    fetchData();
+    (async () => setProds(await fetchData()))();
   }, []);
 
-  const handleAddToCart = (id: number) => {
-    const newItem = prods?.find((item) => item.id === id);
-    if (!newItem) return;
-    const itemAlreadyInCart = cartItems.find((item) => item.id === newItem.id);
-    if (!itemAlreadyInCart) {
-      setCartItems([...cartItems, { ...newItem, quantity: 1 }]);
-    } else {
-      const newCartItems = cartItems.map((item) =>
-        item.id === newItem.id ? { ...item, quantity: item.quantity + 1 } : item
-      );
-      setCartItems(newCartItems);
-    }
-  };
+  useEffect(() => {
+    setCartItemsNumber(itemsNumber(cartItems));
+  }, [cartItems]);
 
-  const addQuantity = (id: number) => {
-    console.log("agregar : " + id);
-  };
-
-  const subQuantity = (id: number) => {
-    console.log("restar : " + id);
-  };
-
-  const remove = (id: number) => {
-    console.log("remover : " + id);
-  };
+  useEffect(() => {
+    handleEscape();
+  }, [showCart]);
 
   return (
     <main>
-      <h1 className="text-5xl text-bold text-center my-8">Zustand - State Management</h1>
+      <h1 className="title main">Mini e-commerce</h1>
+      <div className="title-sec-logo">
+        <img className="logo-state-manager" src="./src/assets/zt-logo.png" alt="State manager logo" />
+        <h2 className="title secondary">Zustand Version</h2>
+      </div>
       <div className="cart-icon" onClick={() => setShowCart((prev) => !prev)}>
         <IoCartOutline />
-        {cartItems.length === 0 ? "" : <p className="cart-quantity">{cartItems.length}</p>}
+        {cartItems.length === 0 ? "" : <p className="cart-quantity">{cartItemsNumber}</p>}
       </div>
       <Cart
         cartItems={cartItems}
