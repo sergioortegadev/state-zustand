@@ -1,4 +1,4 @@
-import { Product } from "./Products";
+import { Product } from "../types";
 
 const Card = ({ prod, addToCart }: { prod: Product; addToCart: (id: number) => void }) => {
   return (

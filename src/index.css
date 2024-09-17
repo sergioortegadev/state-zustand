@@ -10,6 +10,7 @@
     @apply text-4xl mt-8 font-bold;
   }
   .secondary {
+    text-shadow: 3px 2px 6px #b0b0b080;
     @apply text-3xl my-4 font-semibold;
   }
 
@@ -30,6 +31,7 @@
     .prod-photo {
       @apply flex items-center justify-center w-28 h-40 flex-shrink-0 aspect-square;
       img {
+        filter: drop-shadow(4px 3px 4px #c0c0c060);
         @apply w-full h-full object-cover;
       }
     }
@@ -55,13 +57,16 @@
   }
 
   .cart-icon {
-    @apply fixed top-5 right-5 text-2xl bg-gray-700/70 p-4 rounded-full;
+    @apply fixed top-5 right-5 text-2xl bg-gray-300/95 dark:bg-gray-700/70 p-4 rounded-full;
     .cart-quantity {
       @apply absolute bottom-0 left-2 text-2xl font-bold text-red-500;
     }
   }
   .external-cart {
-    @apply flex justify-center items-center w-svw h-screen bg-gray-600/50 backdrop-blur-sm fixed top-0;
+    ::-webkit-scrollbar {
+      width: 0;
+    }
+    @apply z-10 flex justify-center items-center w-svw h-screen bg-gray-400/80 dark:bg-gray-600/50 backdrop-blur-sm fixed top-0;
   }
   .slide-in {
     @apply transform translate-x-full -translate-y-full opacity-0 transition-all duration-300;
@@ -76,7 +81,7 @@
     @apply transform translate-x-full -translate-y-full opacity-0;
   }
   .cart {
-    @apply relative flex flex-col gap-1 mx-auto border-2 rounded-2xl border-gray-500/50 px-4 py-14  bg-gray-700/90;
+    @apply relative flex flex-col gap-1 mx-auto border-2 rounded-2xl border-gray-200/70 bg-gray-50/60 dark:border-gray-500/40 px-4 py-14  dark:bg-gray-700/80 max-h-[70vh] overflow-y-scroll;
   }
 
   .cart-row {
@@ -96,7 +101,7 @@
   }
 
   .cart-btn-close {
-    @apply absolute top-0 right-0 w-10 h-10 bg-transparent hover:bg-red-600 font-bold px-1 rounded-tr-xl border-2 border-transparent  active:bg-red-600/80 text-sm;
+    @apply absolute top-0 right-0 w-10 h-10 text-gray-800/80 bg-transparent hover:bg-red-600 font-bold px-1 rounded-tr-xl border-2 border-transparent  active:bg-red-600/80 text-sm;
   }
   .cart-btn-checkout {
     @apply flex justify-around items-center bg-green-500/95 font-bold py-2 px-4 -mb-10 mt-6 rounded border-2 border-transparent hover:bg-green-500/80 active:bg-green-600/80;
@@ -136,11 +141,12 @@
     }
   }
   html {
-    @apply dark:text-gray-200 dark:bg-slate-800;
+    @apply bg-gray-100 dark:text-gray-200 dark:bg-slate-800;
   }
 
   ::-webkit-scrollbar {
-    width: 8px;
+    width: 6px;
+    margin-right: 4px;
     border-radius: 8px;
   }
   ::-webkit-scrollbar-track {
