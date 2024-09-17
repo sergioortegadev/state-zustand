@@ -1,22 +1,22 @@
 import { useEffect, useState } from "react";
 import CartRow from "./CartRow";
-import { Product } from "./Products";
+import { useCartItems } from "../store/cartItems";
 
 const Cart = ({
-  cartItems,
   addQuantity,
   subQuantity,
   remove,
   showCart,
+  total,
 }: {
-  cartItems: Product[];
   addQuantity: (id: number) => void;
   subQuantity: (id: number) => void;
   remove: (id: number) => void;
   showCart: boolean;
+  total: number;
 }) => {
+  const cartItems = useCartItems.getState().cartItems;
   const [closeCart, setCloseCart] = useState<boolean>(true);
-  const [total, setTotal] = useState<number>(0);
 
   const handleCloseCart = () => {
     setCloseCart(!closeCart);
@@ -24,10 +24,6 @@ const Cart = ({
   useEffect(() => {
     handleCloseCart();
   }, [showCart]);
-
-  useEffect(() => {
-    setTotal(cartItems.reduce((acc, item) => acc + item.price * (item.quantity ?? 1), 0));
-  }, [cartItems]);
 
   return (
     <div
